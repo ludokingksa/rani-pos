@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#061119"><link rel="manifest" href="manifest.webmanifest">
+<title>সেটিংস</title>
+<style>
+:root{--navy:#061119;--gold:#d9a94e;--bg:#fffaf1;--card:#fff;--text:#2a2233;--sub:#6b6275}
+@media (prefers-color-scheme:dark){:root{--bg:#171420;--card:#221e2e;--text:#f4eee6;--sub:#a79fb3}}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,sans-serif;background:var(--bg);color:var(--text);padding-bottom:30px}
+.top{background:var(--navy);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5}
+.top a{color:#fff;text-decoration:none;font-size:22px}.top h1{font-size:18px;flex:1}
+.wrap{max-width:700px;margin:auto;padding:10px}
+.sec{background:var(--card);border-radius:16px;border:1px solid #0001;padding:14px;margin-bottom:12px}
+.sec h2{font-size:16px;margin-bottom:8px}.sec>*{margin-top:8px}.sec>h2{margin-top:0}
+.hint{font-size:13px;color:var(--sub);line-height:1.5}
+textarea{font:inherit;background:var(--bg);color:var(--text);border:1px solid #0003;border-radius:10px;padding:10px;width:100%;resize:vertical}
+input,select{font:inherit;background:var(--bg);color:var(--text);border:1px solid #0003;border-radius:10px;padding:10px;width:100%}
+.b{border:0;border-radius:14px;background:var(--navy);color:#fff;padding:12px;font:inherit;font-weight:700;width:100%}
+.b.g{background:var(--gold);color:#222}.b.r{background:#c0262d}
+.file{display:block;text-align:center;border:1.5px dashed var(--gold);border-radius:14px;padding:12px;font-weight:700}.file input{display:none}
+.warn{background:#d9a94e22;border:1px solid var(--gold);border-radius:12px;padding:10px;font-size:13px;line-height:1.5}
+.ok{color:#2e9d5b;font-weight:700}.bad{color:#c0262d;font-weight:700}
+#toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#2e9d5b;color:#fff;padding:9px 18px;border-radius:20px;display:none;z-index:99;max-width:90vw;text-align:center}
+</style><link rel="stylesheet" href="theme.css"></head><body><script>window.LOC=function(){try{var l=localStorage.getItem('lang');return l==='en'?'en-US':l==='ar'?'ar-u-nu-latn':(localStorage.getItem('rani_en')==='1'?'en-US':'bn-BD')}catch(e){return 'bn-BD'}};
+(function(){try{if(localStorage.getItem('rani_secure')!=='1')return;var r=localStorage.getItem('rani_role'),bad='owner'.split(',').indexOf(r)<0,c={};
+try{c=JSON.parse(localStorage.getItem('rani_cfg')||'{}')}catch(e){}
+var m=+c.idle||0,out=function(){['rani_role','rani_user','rani_uid'].forEach(function(k){localStorage.removeItem(k)});if(parent!==window)parent.postMessage('close','*');else location.replace('index.html')};
+if(!bad&&m>0&&Date.now()-(+localStorage.getItem('rani_act')||Date.now())>m*60000){out();return}
+if(bad){if(parent!==window)parent.postMessage('close','*');else location.replace('index.html');return}
+var t=0;['click','touchstart','keydown'].forEach(function(e){addEventListener(e,function(){var n=Date.now();if(n-t>15000){t=n;localStorage.setItem('rani_act',n)}},true)});localStorage.setItem('rani_act',Date.now());
+if(m>0)setInterval(function(){if(Date.now()-(+localStorage.getItem('rani_act')||0)>m*60000)out()},30000)}catch(e){}})()</script><script src="i18n.js"></script>
+<div class="top"><a href="index.html" aria-label="Back">←</a><h1>সেটিংস</h1></div>
+<div class="wrap">
+ <div class="sec"><h2>💾 ডেটা ব্যাকআপ</h2>
+  <div class="warn">আপনার সব বিক্রি, স্টক, খরচ ও ব্যবহারকারীর তথ্য <b>শুধু এই ফোনে</b> আছে। ফোন হারালে, ব্রাউজারের ডেটা মুছলে বা অ্যাপ আনইনস্টল করলে সব চলে যাবে। তাই নিয়মিত (অন্তত সপ্তাহে একবার) ব্যাকআপ রাখুন।</div>
+  <div id="lb" class="hint"></div>
+  <button class="b g" id="dl">📥 ব্যাকআপ ফাইল নামান</button>
+  <button class="b" id="sh">📲 ব্যাকআপ শেয়ার করুন (WhatsApp / Drive)</button>
+  <label class="file">📤 ব্যাকআপ ফাইল থেকে ফিরিয়ে আনুন<input type="file" id="rf" accept=".json,application/json"></label>
+  <div class="hint">ব্যাকআপ ফাইলে পণ্যের ছবি ও ব্যবহারকারীর পিনের (সংকেতে রূপান্তরিত) তথ্যও থাকে। ফাইলটি শুধু নিজের কাছে বা নিরাপদ জায়গায় রাখুন।</div></div>
+ <div class="sec"><h2>🏪 দোকানের তথ্য</h2>
+  <input id="sn" placeholder="দোকানের নাম"><input id="sp" type="tel" placeholder="ফোন নম্বর"><input id="sa" placeholder="ঠিকানা"><input id="swa" type="tel" placeholder="WhatsApp নম্বর (ফাঁকা হলে ফোন নম্বরই ধরা হবে)"><input id="sem" type="email" placeholder="ইমেইল"><input id="sfb" placeholder="ফেসবুক পেজের লিংক"><input id="shr" placeholder="খোলার সময় (যেমন: সকাল ৮টা – রাত ১০টা)">
+  <button class="b g" id="ss">সংরক্ষণ</button><div class="hint">হিসাব শেয়ার করলে এই নাম ব্যবহার হবে। এই তথ্য নিচের মেনুর "যোগাযোগ" পেজে দেখাবে।</div></div>
+ <div class="sec"><h2>📄 এবাউট পেজের তথ্য</h2>
+  <div class="hint">যা দেবেন শুধু সেটাই এবাউট পেজে দেখাবে। শুধু সত্যি ও যাচাই করা তথ্য দিন।</div>
+  <div class="hint">টিমের সদস্য (প্রতি লাইনে একজন: নাম - পদ)</div><textarea id="tm" rows="3" placeholder="আবু মাহাদি - মালিক"></textarea>
+  <div class="hint">শাখার ঠিকানা (প্রতি লাইনে একটি)</div><textarea id="br" rows="3"></textarea>
+  <div class="hint">সার্টিফিকেট ও অর্জন (প্রতি লাইনে একটি)</div><textarea id="ce" rows="3"></textarea>
+  <div class="hint">গ্রাহকের মতামত (প্রতি লাইনে একটি: নাম: মতামত) — শুধু অনুমতি নেওয়া আসল মতামত</div><textarea id="rvw" rows="3"></textarea>
+  <button class="b g" id="sv2">সংরক্ষণ</button>
+  <div class="hint">ফটো গ্যালারি (সর্বোচ্চ ১২টি)</div><div id="gl" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px"></div>
+  <label class="file">🖼️ ছবি যোগ করুন<input type="file" id="gp" accept="image/*" multiple></label></div>
+ <div class="sec"><h2>⚙️ কাজের নিয়ম</h2>
+  <div class="hint">স্টকের চেয়ে বেশি বিক্রি করতে গেলে</div><select id="cs"><option value="warn">সতর্ক করবে, কিন্তু বিক্রি করতে দেবে</option><option value="block">বিক্রি আটকে দেবে</option></select>
+  <div class="hint">বিক্রির আগে বিক্রেতার নাম বাছা বাধ্যতামূলক?</div><select id="cn"><option value="yes">হ্যাঁ, বাধ্যতামূলক</option><option value="no">না, লগইন করা ব্যবহারকারীর নাম বসবে</option></select>
+  <div class="hint">ক্যাশিয়ার সর্বোচ্চ কত % ছাড় দিতে পারবে? (খালি = সীমা নেই, ০ = ছাড় দিতে পারবে না)</div><input id="cd" type="number" inputmode="decimal" min="0" max="100" placeholder="যেমন ১০">
+  <div class="hint">মোট টাকা পূর্ণ সংখ্যায় রাউন্ড করবেন? (যেমন ৩৪৫.৬৭ → ৩৪৬)</div><select id="cr"><option value="no">না</option><option value="yes">হ্যাঁ</option></select>
+  <div class="hint">কিছুক্ষণ ব্যবহার না করলে নিজে থেকে লগ আউট (পিন চালু থাকলে)</div><select id="ci"><option value="0">বন্ধ</option><option value="5">৫ মিনিট</option><option value="15">১৫ মিনিট</option><option value="30">৩০ মিনিট</option></select>
+  <div class="hint">ব্যাকআপ না নিলে হোম পেজে মনে করিয়ে দেবে (মালিককে)</div><select id="cb"><option value="0">বন্ধ</option><option value="3">৩ দিন পর</option><option value="7">৭ দিন পর</option><option value="14">১৪ দিন পর</option></select>
+  <div class="hint">সংখ্যার ধরন</div><select id="cg"><option value="bn">বাংলা (১২৩)</option><option value="en">English (123)</option></select>
+  <button class="b g" id="cv">নিয়ম সংরক্ষণ</button></div>
+ <div class="sec"><h2>🌐 ভাষা</h2><select id="lg"><option value="bn">বাংলা</option><option value="en">English</option><option value="ar">العربية</option></select></div>
+ <div class="sec"><h2>🔄 সার্ভার সিঙ্ক লিংক</h2><input id="su" type="url" placeholder="https://…"><button class="b g" id="sv">সংরক্ষণ</button>
+  <div class="hint">খালি রাখলে বিক্রি শুধু ফোনে জমা থাকবে। লিংক দিলে ইন্টারনেট এলে বিক্রি সেখানে পাঠানো হবে।</div></div>
+ <div class="sec"><h2>🛡️ ডেটা সুরক্ষা</h2><div class="hint" id="st">…</div>
+  <button class="b" id="pe">ফোনকে ডেটা মুছে না ফেলতে বলুন</button>
+  <div class="hint">ফোনে জায়গা কমে গেলে ব্রাউজার কখনো কখনো সাইটের ডেটা মুছে দিতে পারে। এই বোতামে সেটা কঠিন করা যায়, তবে ব্যাকআপের বিকল্প নয়।</div></div>
+ <div class="sec"><h2>⚠️ বিপজ্জনক এলাকা</h2><button class="b r" id="wp">সব ডেটা মুছে ফেলুন</button><div class="hint">আগে ব্যাকআপ নিয়ে নিন। এটি ফেরানো যায় না।</div></div>
+ <div class="hint" style="text-align:center">রাণী সুইটস এন্ড বেকারি অ্যাপ • সংস্করণ ১</div>
+</div><div id="toast"></div>
+<script>
+var $=function(i){return document.getElementById(i)},ST=['products','sales','materials','stocklog','expenses','users'],db;
+function open(){return new Promise(function(res,rej){var r=indexedDB.open('rani',4);
+ r.onupgradeneeded=function(){var d=r.result;ST.forEach(function(n){if(!d.objectStoreNames.contains(n))d.createObjectStore(n,{keyPath:'id',autoIncrement:true})})};
+ r.onsuccess=function(){res(r.result)};r.onerror=rej})}
+var all=function(s){return new Promise(function(r){var q=db.transaction(s).objectStore(s).getAll();q.onsuccess=function(){r(q.result)}})};
+function toast(m){var t=$('toast');t.textContent=m;t.style.display='block';setTimeout(function(){t.style.display='none'},2400)}
+function back(){if(parent!==window)parent.postMessage('close','*');else location.href='index.html'}
+function ymd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function last(){var t=+localStorage.getItem('rani_lastbackup')||0;
+ if(!t){$('lb').innerHTML='<span class="bad">এখনো কোনো ব্যাকআপ নেওয়া হয়নি</span>';return}
+ var days=Math.floor((Date.now()-t)/864e5),d=new Date(t).toLocaleDateString(LOC(),{day:'numeric',month:'long',year:'numeric'});
+ $('lb').innerHTML='শেষ ব্যাকআপ: <span class="'+(days>7?'bad':'ok')+'">'+d+(days>7?' ('+days.toLocaleString(LOC())+' দিন আগে — আবার নিন)':'')+'</span>'}
+async function pack(){var o={app:'rani',v:1,at:Date.now(),stores:{},ls:{}};for(var i=0;i<ST.length;i++)o.stores[ST[i]]=await all(ST[i]);
+ ['lang','syncUrl','rani_shop','rani_sellers','mig2','mig3','rani_cfg','rani_en','rani_about','rani_gallery'].forEach(function(k){var v=localStorage.getItem(k);if(v!==null)o.ls[k]=v});return JSON.stringify(o)}
+var fname=function(){return 'rani-backup-'+ymd(new Date())+'.json'};
+function mark(){localStorage.setItem('rani_lastbackup',Date.now());last()}
+$('dl').onclick=async function(){var t=await pack(),b=new Blob([t],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=fname();document.body.appendChild(a);a.click();
+ setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},2000);mark();toast('ব্যাকআপ নামানো হয়েছে ✓ (ডাউনলোড ফোল্ডার দেখুন)')};
+$('sh').onclick=async function(){var t=await pack(),f=new File([t],fname(),{type:'application/json'});
+ if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:'রাণী ব্যাকআপ'});mark()}catch(e){}}else toast('এই ফোনে শেয়ার চলছে না, "ফাইল নামান" ব্যবহার করুন')};
+$('rf').onchange=async function(e){var f=e.target.files[0];e.target.value='';if(!f)return;var o;
+ try{o=JSON.parse(await f.text())}catch(x){return toast('ফাইলটি পড়া যাচ্ছে না')}
+ if(!o||o.app!=='rani'||!o.stores)return toast('এটি রাণী অ্যাপের ব্যাকআপ ফাইল নয়');
+ var n=(o.stores.sales||[]).length,d=new Date(o.at).toLocaleDateString(LOC(),{day:'numeric',month:'long',year:'numeric'});
+ if(!confirm(d+'-এর ব্যাকআপ ফিরিয়ে আনবেন?\n('+n.toLocaleString(LOC())+'টি বিক্রি আছে)\n\n⚠️ এই ফোনের বর্তমান সব ডেটা মুছে এই ফাইলের ডেটা বসবে। এরপর আপনাকে আবার লগইন করতে হবে।'))return;
+ try{await new Promise(function(res,rej){var t=db.transaction(ST,'readwrite');ST.forEach(function(s){var st=t.objectStore(s);st.clear();(o.stores[s]||[]).forEach(function(r){st.put(r)})});t.oncomplete=res;t.onerror=rej;t.onabort=rej})}
+ catch(x){return toast('ফিরিয়ে আনা যায়নি, আগের ডেটা অপরিবর্তিত')}
+ Object.keys(o.ls||{}).forEach(function(k){localStorage.setItem(k,o.ls[k])});
+ ['rani_role','rani_user','rani_uid'].forEach(function(k){localStorage.removeItem(k)});toast('ফিরিয়ে আনা হয়েছে ✓');setTimeout(back,1300)};
+function shop(){try{return JSON.parse(localStorage.getItem('rani_shop')||'{}')}catch(e){return {}}}
+$('ss').onclick=function(){localStorage.setItem('rani_shop',JSON.stringify({name:$('sn').value.trim(),phone:$('sp').value.trim(),addr:$('sa').value.trim(),wa:$('swa').value.trim(),email:$('sem').value.trim(),fb:$('sfb').value.trim(),hours:$('shr').value.trim()}));toast('সংরক্ষিত ✓')};
+function cfg(){try{return JSON.parse(localStorage.getItem('rani_cfg')||'{}')}catch(e){return {}}}
+$('cv').onclick=function(){var d=$('cd').value;localStorage.setItem('rani_cfg',JSON.stringify({stockBlock:$('cs').value==='block',needSeller:$('cn').value==='yes',cashMaxDisc:d===""?null:+d,round:$('cr').value==='yes',idle:+$('ci').value,remind:+$('cb').value}));localStorage.setItem('rani_en',$('cg').value==='en'?'1':'0');toast('নিয়ম সংরক্ষিত ✓')};
+function J(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}}
+var GAL=J('rani_gallery')||[];
+function drawG(){$('gl').innerHTML=GAL.map(function(u,i){return '<div style="position:relative"><img src="'+u+'" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px"><button data-i="'+i+'" style="position:absolute;top:2px;right:2px;border:0;border-radius:50%;width:24px;height:24px;background:#c0262d;color:#fff">×</button></div>'}).join("")||'<div class="hint">কোনো ছবি নেই</div>'}
+function shrink2(f){return new Promise(function(res){var r=new FileReader();r.onload=function(){var i=new Image();i.onload=function(){var k=Math.min(1,560/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.72))};i.src=r.result};r.readAsDataURL(f)})}
+$('gp').onchange=async function(e){var fs=[].slice.call(e.target.files);e.target.value="";for(var i=0;i<fs.length;i++){if(GAL.length>=12){toast('সর্বোচ্চ ১২টি ছবি');break}GAL.push(await shrink2(fs[i]));try{localStorage.setItem('rani_gallery',JSON.stringify(GAL))}catch(x){GAL.pop();toast('জায়গা শেষ — কিছু ছবি মুছুন');break}}drawG()};
+$('gl').onclick=function(e){var i=e.target.dataset.i;if(i===undefined)return;GAL.splice(+i,1);localStorage.setItem('rani_gallery',JSON.stringify(GAL));drawG()};
+function L2(id){return $(id).value.split('\n').map(function(x){return x.trim()}).filter(Boolean)}
+$('sv2').onclick=function(){localStorage.setItem('rani_about',JSON.stringify({team:L2('tm'),branches:L2('br'),certs:L2('ce'),reviews:L2('rvw')}));toast('এবাউট পেজের তথ্য সংরক্ষিত ✓')};
+$('lg').onchange=function(){localStorage.setItem('lang',this.value);location.reload()};
+$('sv').onclick=function(){localStorage.setItem('syncUrl',$('su').value.trim());toast('সংরক্ষিত ✓')};
+function est(){var s=navigator.storage;if(!s||!s.estimate){$('st').textContent='এই ব্রাউজারে তথ্য দেখা যায় না';return}
+ Promise.all([s.estimate(),s.persisted?s.persisted():Promise.resolve(false)]).then(function(r){var mb=((r[0].usage||0)/1048576).toFixed(1);$('st').innerHTML='ব্যবহৃত জায়গা: '+Number(mb).toLocaleString(LOC())+' MB • সুরক্ষা: '+(r[1]?'<span class="ok">চালু ✓</span>':'<span class="bad">চালু নেই</span>')})}
+$('pe').onclick=function(){if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().then(function(ok){toast(ok?'ডেটা সুরক্ষিত ✓':'ব্রাউজার এখন অনুমতি দেয়নি। অ্যাপ হোম স্ক্রিনে ইনস্টল করে আবার চেষ্টা করুন');est()});else toast('এই ব্রাউজারে সম্ভব নয়')};
+$('wp').onclick=async function(){var t=prompt('সব ডেটা (বিক্রি, স্টক, খরচ, ব্যবহারকারী) মুছে যাবে।\nনিশ্চিত হলে নিচে "মুছুন" লিখুন:');if(['মুছুন','delete','حذف'].indexOf((t||'').trim().toLowerCase())<0)return;
+ await new Promise(function(res){var x=db.transaction(ST,'readwrite');ST.forEach(function(s){x.objectStore(s).clear()});x.oncomplete=res});
+ ['rani_role','rani_user','rani_uid','rani_secure','rani_shop','rani_lastbackup','syncUrl','mig2','mig3','rani_sellers','rani_seller','rani_cfg','rani_en','rani_about','rani_gallery'].forEach(function(k){localStorage.removeItem(k)});toast('সব ডেটা মুছে গেছে');setTimeout(back,1300)};
+(async function(){db=await open();var s=shop();$('sn').value=s.name||'';$('sp').value=s.phone||'';$('sa').value=s.addr||'';$('swa').value=s.wa||'';$('sem').value=s.email||'';$('sfb').value=s.fb||'';$('shr').value=s.hours||'';$('lg').value=localStorage.getItem('lang')||'bn';$('su').value=localStorage.getItem('syncUrl')||'';var c=cfg();$('cs').value=c.stockBlock?'block':'warn';$('cn').value=c.needSeller===false?'no':'yes';$('cd').value=(c.cashMaxDisc===undefined||c.cashMaxDisc===null)?"":c.cashMaxDisc;$('cr').value=c.round?'yes':'no';$('ci').value=String(c.idle||0);$('cb').value=String(c.remind===undefined?7:c.remind);$('cg').value=localStorage.getItem('rani_en')==='1'?'en':'bn';var ab=J('rani_about')||{};$('tm').value=(ab.team||[]).join('\n');$('br').value=(ab.branches||[]).join('\n');$('ce').value=(ab.certs||[]).join('\n');$('rvw').value=(ab.reviews||[]).join('\n');drawG();last();est();
+ if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})})();
+</script></body></html>

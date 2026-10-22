@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#061119"><link rel="manifest" href="manifest.webmanifest">
+<title>খরচ ও ব্যয়</title>
+<style>
+:root{--navy:#061119;--gold:#d9a94e;--bg:#fffaf1;--card:#fff;--text:#2a2233;--sub:#6b6275}
+@media (prefers-color-scheme:dark){:root{--bg:#171420;--card:#221e2e;--text:#f4eee6;--sub:#a79fb3}}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,sans-serif;background:var(--bg);color:var(--text);padding-bottom:30px}
+.top{background:var(--navy);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5}
+.top a{color:#fff;text-decoration:none;font-size:22px}.top h1{font-size:18px;flex:1}
+.top button{background:var(--gold);border:0;border-radius:14px;padding:8px 14px;font:inherit;font-weight:700}
+.wrap{max-width:800px;margin:auto;padding:10px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px;align-items:center}
+.tabs button,.tabs label{flex:none;border:1px solid var(--gold);background:var(--card);color:var(--text);border-radius:18px;padding:7px 14px;font:inherit;position:relative}
+.tabs .on{background:var(--gold);color:#222;font-weight:700}
+.tabs input{position:absolute;inset:0;opacity:0;width:100%;font-size:16px}
+.date{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--sub);font-size:15px;margin:4px 0 10px;text-align:center}
+.date button{width:40px;height:40px;border-radius:50%;border:1px solid var(--gold);background:var(--card);color:var(--text);font-size:22px;line-height:1}.date button:disabled{opacity:.3}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.c{background:var(--card);border-radius:16px;padding:12px;border:1px solid #0001}.c span{font-size:13px;color:var(--sub)}.c b{display:block;font-size:20px;margin-top:2px}
+.c.big{grid-column:1/-1;background:var(--navy);color:#fff}.c.big span{color:#cfc5b4}.c.big b{font-size:30px;color:var(--gold)}
+.good{color:#2e9d5b}.bad{color:#c0262d}
+h2{font-size:16px;margin:18px 0 8px}
+.box{background:var(--card);border-radius:16px;border:1px solid #0001;overflow:hidden}
+.r{display:flex;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid #0001;font-size:14px;width:100%;background:none;border-left:0;border-right:0;border-top:0;color:var(--text);font-family:inherit;text-align:left}
+.r:last-child{border:0}.r .n{flex:1}.r small{display:block;color:var(--sub);font-size:12px}.r b{white-space:nowrap}.r .ic{font-size:22px}
+.bar{height:6px;border-radius:3px;background:var(--gold);margin-top:4px}
+.empty{padding:22px;text-align:center;color:var(--sub)}.hint{font-size:12px;color:var(--sub);margin-top:6px}
+dialog{border:0;border-radius:18px;padding:16px;background:var(--card);color:var(--text);width:min(92vw,380px)}
+dialog>*{margin-top:8px}dialog::backdrop{background:#0006}
+input,select{font:inherit;background:var(--bg);color:var(--text);border:1px solid #0003;border-radius:10px;padding:10px;width:100%}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chips button{border:1px solid var(--gold);background:var(--bg);color:var(--text);border-radius:14px;padding:8px 10px;font:inherit;font-size:13px}.chips .on{background:var(--gold);color:#222;font-weight:700}
+.row{display:flex;gap:8px;align-items:center}.pay{border:0;border-radius:14px;background:var(--navy);color:#fff;padding:12px 22px;font:inherit;font-weight:700}.link{background:none;border:0;color:#b9852a;font:inherit;text-decoration:underline}
+#toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#2e9d5b;color:#fff;padding:9px 18px;border-radius:20px;display:none;z-index:99}
+</style><link rel="stylesheet" href="theme.css"></head><body><script>window.LOC=function(){try{var l=localStorage.getItem('lang');return l==='en'?'en-US':l==='ar'?'ar-u-nu-latn':(localStorage.getItem('rani_en')==='1'?'en-US':'bn-BD')}catch(e){return 'bn-BD'}};
+(function(){try{if(localStorage.getItem('rani_secure')!=='1')return;var r=localStorage.getItem('rani_role'),bad='owner,manager'.split(',').indexOf(r)<0,c={};
+try{c=JSON.parse(localStorage.getItem('rani_cfg')||'{}')}catch(e){}
+var m=+c.idle||0,out=function(){['rani_role','rani_user','rani_uid'].forEach(function(k){localStorage.removeItem(k)});if(parent!==window)parent.postMessage('close','*');else location.replace('index.html')};
+if(!bad&&m>0&&Date.now()-(+localStorage.getItem('rani_act')||Date.now())>m*60000){out();return}
+if(bad){if(parent!==window)parent.postMessage('close','*');else location.replace('index.html');return}
+var t=0;['click','touchstart','keydown'].forEach(function(e){addEventListener(e,function(){var n=Date.now();if(n-t>15000){t=n;localStorage.setItem('rani_act',n)}},true)});localStorage.setItem('rani_act',Date.now());
+if(m>0)setInterval(function(){if(Date.now()-(+localStorage.getItem('rani_act')||0)>m*60000)out()},30000)}catch(e){}})()</script><script src="i18n.js"></script>
+<div class="top"><a href="index.html" aria-label="Back">←</a><h1>খরচ ও ব্যয়</h1><button id="new">➕ নতুন খরচ</button></div>
+<div class="wrap">
+ <div class="tabs" id="tabs"><button data-m="today">আজ</button><button data-m="yest">গতকাল</button><button data-m="month">এই মাস</button><label id="dl">📅 তারিখ<input type="date" id="dp"></label><label id="ml">🗓 মাস<input type="month" id="mp"></label></div>
+ <div class="date"><button id="pv" aria-label="আগে">‹</button><span id="dtxt"></span><button id="nx" aria-label="পরে">›</button></div>
+ <div class="cards" id="cards"></div>
+ <h2>কোন খাতে কত খরচ</h2><div class="box" id="cats"></div>
+ <h2>খরচের তালিকা</h2><div class="box" id="list"></div>
+ <div class="hint">নিট = বিক্রি − খরচ। এতে পণ্যের কাঁচামালের দাম আলাদা ধরা হয়নি, তাই কাঁচামাল কিনলে "কাঁচামাল" খাতে খরচ লিখুন। খরচ মুছতে তালিকার সারিতে চাপুন।</div>
+</div><div id="toast"></div>
+<dialog id="ed"><b>নতুন খরচ</b>
+ <input id="ea" type="number" inputmode="decimal" step="any" min="0" placeholder="টাকার পরিমাণ ৳"><div class="chips" id="cc"></div>
+ <input id="en" placeholder="নোট (যেমন: চিনি ২৫ কেজি)"><input id="ed2" type="date">
+ <div class="row"><button class="pay" id="eok">সংরক্ষণ</button><button class="link" id="eno">বাতিল</button></div></dialog>
+<script>
+var $=function(i){return document.getElementById(i)},nb=function(n){return (+n).toLocaleString(LOC(),{maximumFractionDigits:2})},tk=function(n){return '৳'+nb(Math.round(n*100)/100)};
+var CATS={raw:['কাঁচামাল','🧂'],salary:['বেতন','👷'],rent:['ভাড়া','🏠'],util:['বিদ্যুৎ/গ্যাস/পানি','💡'],transport:['পরিবহন','🚚'],other:['অন্যান্য','🧾']};
+var db,mode='day',cur=new Date(),EX=[],SA=[],cat='raw';
+function ymd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function open(){return new Promise(function(res,rej){var r=indexedDB.open('rani',4);
+ r.onupgradeneeded=function(){var d=r.result;['products','sales','materials','stocklog','expenses','users'].forEach(function(n){if(!d.objectStoreNames.contains(n))d.createObjectStore(n,{keyPath:'id',autoIncrement:true})})};
+ r.onsuccess=function(){res(r.result)};r.onerror=rej})}
+var all=function(s){return new Promise(function(r){var q=db.transaction(s).objectStore(s).getAll();q.onsuccess=function(){r(q.result)}})};
+function toast(m){var t=$('toast');t.textContent=m;t.style.display='block';setTimeout(function(){t.style.display='none'},1800)}
+function render(){
+ var a,b,label;
+ if(mode==='month'){a=new Date(cur.getFullYear(),cur.getMonth(),1);b=new Date(cur.getFullYear(),cur.getMonth()+1,1);label=a.toLocaleDateString(LOC(),{month:'long',year:'numeric'})}
+ else{a=new Date(cur.getFullYear(),cur.getMonth(),cur.getDate());b=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1);label=a.toLocaleDateString(LOC(),{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+ $('dtxt').textContent=label;
+ var now=new Date(),cm=cur.getFullYear()===now.getFullYear()&&cur.getMonth()===now.getMonth(),tdy=ymd(now),yst=ymd(new Date(Date.now()-864e5)),k=ymd(cur);$('dp').value=k;$('mp').value=k.slice(0,7);
+ [].forEach.call($('tabs').children,function(e){var m=e.dataset&&e.dataset.m,on=(m==='month'&&mode==='month'&&cm)||(mode==='day'&&((m==='today'&&k===tdy)||(m==='yest'&&k===yst)));if(e.tagName==='BUTTON')e.className=on?'on':''});
+ $('dl').className=(mode==='day'&&k!==tdy&&k!==yst)?'on':'';$('ml').className=(mode==='month'&&!cm)?'on':'';$('nx').disabled=mode==='month'?(cm||cur>now):k>=tdy;
+ var E=EX.filter(function(x){return x.at>=a.getTime()&&x.at<b.getTime()}).sort(function(x,y){return y.at-x.at}),tot=0,C={};
+ E.forEach(function(x){tot+=x.amount;C[x.cat]=(C[x.cat]||0)+x.amount});
+ var sales=0;SA.forEach(function(s){if(s.at>=a.getTime()&&s.at<b.getTime())sales+=s.total});
+ $('cards').innerHTML='<div class="c big"><span>'+(mode==='month'?'এই মাসের মোট খরচ':'মোট খরচ')+'</span><b>'+tk(tot)+'</b></div><div class="c"><span>বিক্রি</span><b>'+tk(sales)+'</b></div><div class="c"><span>নিট (বিক্রি − খরচ)</span><b class="'+(sales-tot<0?'bad':'good')+'">'+tk(sales-tot)+'</b></div>';
+ var ks=Object.keys(C).sort(function(x,y){return C[y]-C[x]}),mx=ks.length?C[ks[0]]:1;
+ $('cats').innerHTML=ks.map(function(c){var m=CATS[c]||CATS.other;return '<div class="r"><span class="ic">'+m[1]+'</span><div class="n">'+m[0]+'<div class="bar" style="width:'+Math.max(4,C[c]/mx*100)+'%"></div></div><b>'+tk(C[c])+'</b></div>'}).join('')||'<div class="empty">এই সময়ে কোনো খরচ নেই</div>';
+ $('list').innerHTML=E.map(function(x){var m=CATS[x.cat]||CATS.other,d=new Date(x.at);return '<button class="r" data-id="'+x.id+'"><span class="ic">'+m[1]+'</span><div class="n">'+(x.note||m[0])+'<small>'+m[0]+' • '+d.toLocaleDateString(LOC(),{day:'numeric',month:'short'})+'</small></div><b>'+tk(x.amount)+'</b></button>'}).join('')||'<div class="empty">কোনো খরচ লেখা নেই</div>'}
+function step(n){cur=mode==='month'?new Date(cur.getFullYear(),cur.getMonth()+n,1):new Date(cur.getFullYear(),cur.getMonth(),cur.getDate()+n);render()}
+$('pv').onclick=function(){step(-1)};$('nx').onclick=function(){step(1)};
+$('tabs').onclick=function(e){var m=e.target.dataset&&e.target.dataset.m;if(!m)return;if(m==='month'){mode='month';cur=new Date()}else{mode='day';cur=m==='yest'?new Date(Date.now()-864e5):new Date()}render()};
+$('dp').onchange=function(e){if(!e.target.value)return;var p=e.target.value.split('-');cur=new Date(+p[0],+p[1]-1,+p[2]);mode='day';render()};
+$('mp').onchange=function(e){if(!e.target.value)return;var p=e.target.value.split('-');cur=new Date(+p[0],+p[1]-1,1);mode='month';render()};
+function chips(){$('cc').innerHTML=Object.keys(CATS).map(function(c){return '<button data-c="'+c+'" class="'+(c===cat?'on':'')+'">'+CATS[c][1]+' '+CATS[c][0]+'</button>'}).join('')}
+$('cc').onclick=function(e){if(e.target.dataset.c){cat=e.target.dataset.c;chips()}};
+$('new').onclick=function(){$('ea').value='';$('en').value='';$('ed2').value=ymd(new Date());cat='raw';chips();$('ed').showModal()};
+$('eno').onclick=function(){$('ed').close()};
+$('eok').onclick=async function(){var a=+$('ea').value;if(!(a>0))return toast('টাকার পরিমাণ দিন');
+ var p=($('ed2').value||ymd(new Date())).split('-'),d=new Date(+p[0],+p[1]-1,+p[2]),n=new Date();
+ var at=ymd(d)===ymd(n)?Date.now():new Date(d.getFullYear(),d.getMonth(),d.getDate(),12).getTime();
+ await new Promise(function(r){var t=db.transaction('expenses','readwrite');t.objectStore('expenses').put({at:at,amount:a,cat:cat,note:$('en').value.trim()});t.oncomplete=r});
+ $('ed').close();EX=await all('expenses');cur=new Date(at);mode='day';render();toast('খরচ সংরক্ষিত ✓')};
+$('list').onclick=async function(e){var b=e.target.closest('.r');if(!b||!b.dataset.id)return;if(!confirm('এই খরচ মুছে ফেলবেন?'))return;
+ await new Promise(function(r){var t=db.transaction('expenses','readwrite');t.objectStore('expenses').delete(+b.dataset.id);t.oncomplete=r});EX=await all('expenses');render()};
+(async function(){db=await open();EX=await all('expenses');SA=await all('sales');render();if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})})();
+</script></body></html>

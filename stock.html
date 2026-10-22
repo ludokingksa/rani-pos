@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#061119"><link rel="manifest" href="manifest.webmanifest">
+<title>স্টক ব্যবস্থাপনা</title>
+<style>
+:root{--navy:#061119;--gold:#d9a94e;--bg:#fffaf1;--card:#fff;--text:#2a2233;--sub:#6b6275}
+@media (prefers-color-scheme:dark){:root{--bg:#171420;--card:#221e2e;--text:#f4eee6;--sub:#a79fb3}}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,sans-serif;background:var(--bg);color:var(--text);padding-bottom:30px}
+.top{background:var(--navy);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5}
+.top a{color:#fff;text-decoration:none;font-size:22px}.top h1{font-size:18px;flex:1}
+.top button{background:var(--gold);border:0;border-radius:14px;padding:7px 12px;font:inherit;font-weight:700}
+.wrap{max-width:800px;margin:auto;padding:10px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.c{background:var(--card);border-radius:14px;padding:10px 6px;text-align:center;border:1px solid #0001;font-size:12px;color:var(--sub)}.c b{display:block;font-size:21px;color:var(--text)}
+.c.w b{color:#d98200}.c.r b{color:#c0262d}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px}
+.tabs button{flex:none;border:1px solid var(--gold);background:var(--card);color:var(--text);border-radius:18px;padding:7px 14px;font:inherit}
+.tabs .on{background:var(--gold);color:#222;font-weight:700}
+.box{background:var(--card);border-radius:16px;border:1px solid #0001;overflow:hidden}
+.r{display:flex;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid #0001;font-size:14px;width:100%;background:none;border-left:0;border-right:0;border-top:0;color:var(--text);font-family:inherit;text-align:left}
+.r:last-child{border:0}.r .n{flex:1}.r small{display:block;color:var(--sub);font-size:12px}
+.r .im{width:44px;height:44px;border-radius:10px;object-fit:cover;display:grid;place-items:center;font-size:26px;background:#0001;flex:none}
+.st{font-weight:800;white-space:nowrap}.ok{color:#2e9d5b}.lo{color:#d98200}.no{color:#c0262d}.nt{color:var(--sub);font-weight:400;font-size:12px}
+.empty{padding:22px;text-align:center;color:var(--sub)}
+dialog{border:0;border-radius:18px;padding:16px;background:var(--card);color:var(--text);width:min(92vw,380px)}
+dialog>*{margin-top:8px}dialog::backdrop{background:#0006}
+input,select{font:inherit;background:var(--bg);color:var(--text);border:1px solid #0003;border-radius:10px;padding:9px;width:100%}
+.row{display:flex;gap:8px;align-items:center}.pay{border:0;border-radius:14px;background:var(--navy);color:#fff;padding:12px 22px;font:inherit;font-weight:700}
+.link{background:none;border:0;color:#b9852a;font:inherit;text-decoration:underline}.hint{font-size:12px;color:var(--sub)}
+#toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#2e9d5b;color:#fff;padding:9px 18px;border-radius:20px;display:none;z-index:99}
+</style><link rel="stylesheet" href="theme.css"></head><body><script>window.LOC=function(){try{var l=localStorage.getItem('lang');return l==='en'?'en-US':l==='ar'?'ar-u-nu-latn':(localStorage.getItem('rani_en')==='1'?'en-US':'bn-BD')}catch(e){return 'bn-BD'}};
+(function(){try{if(localStorage.getItem('rani_secure')!=='1')return;var r=localStorage.getItem('rani_role'),bad='owner,manager'.split(',').indexOf(r)<0,c={};
+try{c=JSON.parse(localStorage.getItem('rani_cfg')||'{}')}catch(e){}
+var m=+c.idle||0,out=function(){['rani_role','rani_user','rani_uid'].forEach(function(k){localStorage.removeItem(k)});if(parent!==window)parent.postMessage('close','*');else location.replace('index.html')};
+if(!bad&&m>0&&Date.now()-(+localStorage.getItem('rani_act')||Date.now())>m*60000){out();return}
+if(bad){if(parent!==window)parent.postMessage('close','*');else location.replace('index.html');return}
+var t=0;['click','touchstart','keydown'].forEach(function(e){addEventListener(e,function(){var n=Date.now();if(n-t>15000){t=n;localStorage.setItem('rani_act',n)}},true)});localStorage.setItem('rani_act',Date.now());
+if(m>0)setInterval(function(){if(Date.now()-(+localStorage.getItem('rani_act')||0)>m*60000)out()},30000)}catch(e){}})()</script><script src="i18n.js"></script>
+<div class="top"><a href="index.html" aria-label="Back">←</a><h1>স্টক ব্যবস্থাপনা</h1><button id="newm">➕ উপকরণ</button></div>
+<div class="wrap">
+ <div class="cards"><div class="c">মোট আইটেম<b id="c1">০</b></div><div class="c w">কম স্টক<b id="c2">০</b></div><div class="c r">স্টক শেষ<b id="c3">০</b></div></div>
+ <div class="tabs" id="tabs"><button data-t="products">🍰 পণ্য</button><button data-t="materials">🧂 উপকরণ</button><button data-t="log">📜 লেনদেন</button></div>
+ <div class="box" id="list"></div>
+</div><div id="toast"></div>
+<dialog id="ad"><b id="an"></b><div id="as" class="hint"></div>
+ <select id="at"><option value="add">➕ স্টক যোগ (উৎপাদন / কেনা)</option><option value="sub">➖ কমান (নষ্ট / নিজের ব্যবহার)</option><option value="set">✏️ গণনা করে মোট ঠিক করুন</option></select>
+ <input id="aq" type="number" inputmode="decimal" step="any" min="0" placeholder="পরিমাণ"><div id="au" class="hint"></div>
+ <input id="am" type="number" inputmode="decimal" step="any" min="0" placeholder="সতর্কতা সীমা (এর নিচে নামলে কমলা)">
+ <input id="ar" placeholder="নোট (ঐচ্ছিক)">
+ <div class="row"><button class="pay" id="aok">সংরক্ষণ</button><button class="link" id="ano">বাতিল</button><button class="link" id="adel" style="margin-left:auto;color:#c0262d;display:none">মুছুন</button></div></dialog>
+<dialog id="md"><b>নতুন উপকরণ</b><input id="mn" placeholder="নাম (যেমন ময়দা, চিনি, দুধ)">
+ <select id="mu"><option value="kg">কেজি</option><option value="l">লিটার</option><option value="pc">টি / পিস</option></select>
+ <input id="ms" type="number" inputmode="decimal" step="any" placeholder="এখন কতটুকু আছে"><input id="mm" type="number" inputmode="decimal" step="any" placeholder="সতর্কতা সীমা">
+ <div class="row"><button class="pay" id="mok">সংরক্ষণ</button><button class="link" id="mno">বাতিল</button></div></dialog>
+<script>
+var $=function(i){return document.getElementById(i)},nb=function(n){return (+n).toLocaleString(LOC(),{maximumFractionDigits:3})};
+var r3=function(x){return Math.round(x*1000)/1000},EM={cake:'🎂',biscuit:'🍪',sweet:'🍡',dairy:'🥛'},db,T='products',D={products:[],materials:[],log:[]},cur=null;
+function open(){return new Promise(function(res,rej){var r=indexedDB.open('rani',4);
+ r.onupgradeneeded=function(){var d=r.result;['products','sales','materials','stocklog','expenses','users'].forEach(function(n){if(!d.objectStoreNames.contains(n))d.createObjectStore(n,{keyPath:'id',autoIncrement:true})})};
+ r.onsuccess=function(){res(r.result)};r.onerror=rej})}
+function tx(s,m,f){return new Promise(function(res,rej){var t=db.transaction(s,m),st=t.objectStore(s),q=f(st);t.oncomplete=function(){res(q&&q.result)};t.onerror=rej})}
+var all=function(s){return tx(s,'readonly',function(st){return st.getAll()})},put=function(s,v){return tx(s,'readwrite',function(st){return st.put(v)})};
+function toast(m){var t=$('toast');t.textContent=m;t.style.display='block';setTimeout(function(){t.style.display='none'},1800)}
+var UN={kg:'কেজি',l:'লিটার',pc:'টি'};
+function fq(u,q){var a=Math.abs(q);if(u==='kg')return a<1?nb(Math.round(q*1000))+' গ্রাম':nb(r3(q))+' কেজি';if(u==='l')return a<1?nb(Math.round(q*1000))+' মিলি':nb(r3(q))+' লিটার';return nb(r3(q))+' টি'}
+function stat(i){if(typeof i.stock!=='number')return 'nt';if(i.stock<=0)return 'no';if(i.min>0&&i.stock<=i.min)return 'lo';return 'ok'}
+async function load(){D.products=await all('products');D.materials=await all('materials');D.log=await all('stocklog');render()}
+function render(){
+ [].forEach.call($('tabs').children,function(b){b.className=b.dataset.t===T?'on':''});
+ var tr=D.products.concat(D.materials).filter(function(i){return typeof i.stock==='number'}),lo=0,no=0;
+ tr.forEach(function(i){var s=stat(i);if(s==='lo')lo++;if(s==='no')no++});
+ $('c1').textContent=nb(tr.length);$('c2').textContent=nb(lo);$('c3').textContent=nb(no);$('newm').style.display=T==='materials'?'':'none';
+ var h='';
+ if(T==='log'){h=D.log.sort(function(a,b){return b.at-a.at}).slice(0,100).map(function(l){var ic={add:'➕',sub:'➖',set:'✏️',sale:'🛒',prod:'🏭',use:'🧪'}[l.type]||'•',d=new Date(l.at);
+  return '<div class="r"><span class="im">'+ic+'</span><div class="n">'+l.name+'<small>'+d.toLocaleDateString(LOC(),{day:'numeric',month:'short'})+' '+d.toLocaleTimeString(LOC(),{hour:'numeric',minute:'2-digit'})+(l.note?' • '+l.note:'')+'</small></div><div class="st">'+(l.qty>0?'+':'')+fq(l.unit,l.qty)+'<small class="nt" style="display:block;text-align:right">এখন '+fq(l.unit,l.after)+'</small></div></div>'}).join('')}
+ else h=D[T].sort(function(a,b){return (a.name||'').localeCompare(b.name||'')}).map(function(i){var u=T==='products'?i.unit:i.unit,s=stat(i);
+  var im=i.img?'<img class="im" src="'+i.img+'" alt="">':'<span class="im">'+(T==='products'?EM[i.cat]||'🍰':'🧂')+'</span>';
+  return '<button class="r" data-id="'+i.id+'">'+im+'<div class="n">'+i.name+'<small>'+(i.min>0?'সীমা: '+fq(u,i.min):(s==='nt'?'ট্র্যাক করা হচ্ছে না':'সীমা দেওয়া নেই'))+'</small></div><div class="st '+s+'">'+(s==='nt'?'চালু করুন':fq(u,i.stock)+(s==='lo'?' ⚠️':s==='no'?' ❌':''))+'</div></button>'}).join('');
+ $('list').innerHTML=h||'<div class="empty">'+(T==='materials'?'কোনো উপকরণ নেই — ➕ উপকরণ দিয়ে যোগ করুন':T==='log'?'এখনো কোনো লেনদেন নেই':'কোনো পণ্য নেই — আগে বিক্রি (POS) থেকে পণ্য যোগ করুন')+'</div>'}
+$('tabs').onclick=function(e){if(e.target.dataset.t){T=e.target.dataset.t;render()}};
+$('list').onclick=function(e){var b=e.target.closest('.r');if(!b||!b.dataset.id)return;cur=D[T].find(function(x){return x.id==b.dataset.id});
+ $('an').textContent=cur.name;$('as').textContent='এখন: '+(typeof cur.stock==='number'?fq(cur.unit,cur.stock):'ট্র্যাক করা হচ্ছে না');
+ $('at').value=typeof cur.stock==='number'?'add':'set';$('aq').value='';$('am').value=cur.min||'';$('ar').value='';$('au').textContent='পরিমাণ ('+UN[cur.unit||'pc']+')';
+ $('adel').style.display=T==='materials'?'block':'none';$('ad').showModal()};
+$('aok').onclick=async function(){var raw=$('aq').value,mv=$('am').value;if(raw===''&&mv==='')return toast('পরিমাণ লিখুন');
+ var q=+raw,t=$('at').value,base=typeof cur.stock==='number'?cur.stock:0;
+ if(raw!==''){if(!(q>=0))return toast('সঠিক পরিমাণ দিন');var ns=t==='add'?base+q:t==='sub'?base-q:q;ns=r3(ns);
+  var delta=r3(ns-base);cur.stock=ns;
+  if(delta!==0||t==='set')await put('stocklog',{at:Date.now(),type:t,store:T,pid:cur.id,name:cur.name,qty:delta,unit:cur.unit,after:ns,note:$('ar').value.trim()});
+  if(ns<0)toast('সতর্কতা: স্টক মাইনাসে গেছে')}
+ if(mv!=='')cur.min=+mv;await put(T,cur);$('ad').close();load()};
+$('ano').onclick=function(){$('ad').close()};
+$('adel').onclick=async function(){if(!confirm('এই উপকরণ মুছে ফেলবেন?'))return;await tx('materials','readwrite',function(s){return s.delete(cur.id)});$('ad').close();load()};
+$('newm').onclick=function(){$('mn').value=$('ms').value=$('mm').value='';$('md').showModal()};$('mno').onclick=function(){$('md').close()};
+$('mok').onclick=async function(){var n=$('mn').value.trim();if(!n)return toast('নাম দিন');var s=$('ms').value===''?0:+$('ms').value,u=$('mu').value;
+ var id=await put('materials',{name:n,unit:u,stock:r3(s),min:+$('mm').value||0});
+ if(s>0)await put('stocklog',{at:Date.now(),type:'add',store:'materials',pid:id,name:n,qty:r3(s),unit:u,after:r3(s),note:'প্রারম্ভিক স্টক'});$('md').close();load()};
+(async function(){db=await open();await load();if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})})();
+</script></body></html>

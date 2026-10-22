@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#061119"><link rel="manifest" href="manifest.webmanifest">
+<title>উৎপাদন</title>
+<style>
+:root{--navy:#061119;--gold:#d9a94e;--bg:#fffaf1;--card:#fff;--text:#2a2233;--sub:#6b6275}
+@media (prefers-color-scheme:dark){:root{--bg:#171420;--card:#221e2e;--text:#f4eee6;--sub:#a79fb3}}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,sans-serif;background:var(--bg);color:var(--text);padding-bottom:30px}
+.top{background:var(--navy);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5}
+.top a{color:#fff;text-decoration:none;font-size:22px}.top h1{font-size:18px;flex:1}
+.wrap{max-width:800px;margin:auto;padding:10px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px}
+.tabs button{flex:none;border:1px solid var(--gold);background:var(--card);color:var(--text);border-radius:18px;padding:7px 14px;font:inherit}
+.tabs .on{background:var(--gold);color:#222;font-weight:700}
+.box{background:var(--card);border-radius:16px;border:1px solid #0001;overflow:hidden;margin-top:10px}
+.pad{padding:12px}.pad>*{margin-top:8px}.pad>*:first-child{margin-top:0}
+.r{display:flex;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid #0001;font-size:14px;width:100%;background:none;border-left:0;border-right:0;border-top:0;color:var(--text);font-family:inherit;text-align:left}
+.r:last-child{border:0}.r .n{flex:1}.r small{display:block;color:var(--sub);font-size:12px}.r b{white-space:nowrap}
+.bad{color:#c0262d}.good{color:#2e9d5b}.hint{font-size:13px;color:var(--sub)}
+input,select{font:inherit;background:var(--bg);color:var(--text);border:1px solid #0003;border-radius:10px;padding:10px;width:100%}
+.pay{border:0;border-radius:14px;background:var(--navy);color:#fff;padding:13px 22px;font:inherit;font-weight:700;width:100%}
+.pay:disabled{opacity:.4}.link{background:none;border:0;color:#b9852a;font:inherit;text-decoration:underline}
+.empty{padding:22px;text-align:center;color:var(--sub)}
+dialog{border:0;border-radius:18px;padding:16px;background:var(--card);color:var(--text);width:min(92vw,400px);max-height:85vh;overflow:auto}
+dialog>*{margin-top:8px}dialog::backdrop{background:#0006}
+.m{display:flex;gap:8px;align-items:center}.m span{flex:1;font-size:14px}.m input{width:110px}.m small{color:var(--sub);width:46px}
+.row{display:flex;gap:8px;align-items:center}
+#toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#2e9d5b;color:#fff;padding:9px 18px;border-radius:20px;display:none;z-index:99;max-width:90vw;text-align:center}
+</style><link rel="stylesheet" href="theme.css"></head><body><script>window.LOC=function(){try{var l=localStorage.getItem('lang');return l==='en'?'en-US':l==='ar'?'ar-u-nu-latn':(localStorage.getItem('rani_en')==='1'?'en-US':'bn-BD')}catch(e){return 'bn-BD'}};
+(function(){try{if(localStorage.getItem('rani_secure')!=='1')return;var r=localStorage.getItem('rani_role'),bad='owner,manager'.split(',').indexOf(r)<0,c={};
+try{c=JSON.parse(localStorage.getItem('rani_cfg')||'{}')}catch(e){}
+var m=+c.idle||0,out=function(){['rani_role','rani_user','rani_uid'].forEach(function(k){localStorage.removeItem(k)});if(parent!==window)parent.postMessage('close','*');else location.replace('index.html')};
+if(!bad&&m>0&&Date.now()-(+localStorage.getItem('rani_act')||Date.now())>m*60000){out();return}
+if(bad){if(parent!==window)parent.postMessage('close','*');else location.replace('index.html');return}
+var t=0;['click','touchstart','keydown'].forEach(function(e){addEventListener(e,function(){var n=Date.now();if(n-t>15000){t=n;localStorage.setItem('rani_act',n)}},true)});localStorage.setItem('rani_act',Date.now());
+if(m>0)setInterval(function(){if(Date.now()-(+localStorage.getItem('rani_act')||0)>m*60000)out()},30000)}catch(e){}})()</script><script src="i18n.js"></script>
+<div class="top"><a href="index.html" aria-label="Back">←</a><h1>উৎপাদন</h1></div>
+<div class="wrap">
+ <div class="tabs" id="tabs"><button data-t="make">🏭 উৎপাদন করুন</button><button data-t="rec">📖 রেসিপি</button><button data-t="his">📜 ইতিহাস</button></div>
+ <div id="view"></div>
+</div><div id="toast"></div>
+<dialog id="rd"><b id="rn"></b><div class="hint" id="rh"></div><div id="rl"></div>
+ <div class="row"><button class="pay" id="rok" style="width:auto">সংরক্ষণ</button><button class="link" id="rno">বাতিল</button><button class="link" id="rclr" style="margin-left:auto;color:#c0262d">রেসিপি মুছুন</button></div></dialog>
+<script>
+var $=function(i){return document.getElementById(i)},nb=function(n){return (+n).toLocaleString(LOC(),{maximumFractionDigits:3})},r3=function(x){return Math.round(x*1000)/1000};
+var db,T='make',P=[],M=[],L=[],sel='',qty='',cur=null;
+function open(){return new Promise(function(res,rej){var r=indexedDB.open('rani',4);
+ r.onupgradeneeded=function(){var d=r.result;['products','sales','materials','stocklog','expenses','users'].forEach(function(n){if(!d.objectStoreNames.contains(n))d.createObjectStore(n,{keyPath:'id',autoIncrement:true})})};
+ r.onsuccess=function(){res(r.result)};r.onerror=rej})}
+function tx(s,m,f){return new Promise(function(res,rej){var t=db.transaction(s,m),st=t.objectStore(s),q=f(st);t.oncomplete=function(){res(q&&q.result)};t.onerror=rej})}
+var all=function(s){return tx(s,'readonly',function(st){return st.getAll()})},put=function(s,v){return tx(s,'readwrite',function(st){return st.put(v)})};
+function toast(m){var t=$('toast');t.textContent=m;t.style.display='block';setTimeout(function(){t.style.display='none'},2400)}
+var UN={kg:'কেজি',l:'লিটার',pc:'টি'};
+function fq(u,q){var a=Math.abs(q);if(u==='kg')return a<1?nb(Math.round(q*1000))+' গ্রাম':nb(r3(q))+' কেজি';if(u==='l')return a<1?nb(Math.round(q*1000))+' মিলি':nb(r3(q))+' লিটার';return nb(r3(q))+' টি'}
+var mat=function(id){return M.find(function(m){return m.id==id})},prod=function(id){return P.find(function(p){return p.id==id})};
+async function load(){P=await all('products');M=await all('materials');L=await all('stocklog');render()}
+function need(p,q){return (p.recipe||[]).map(function(l){var m=mat(l.mid);return m?{m:m,n:r3(l.qty*q)}:null}).filter(Boolean)}
+function render(){[].forEach.call($('tabs').children,function(b){b.className=b.dataset.t===T?'on':''});
+ var v=$('view');
+ if(T==='make'){
+  if(!P.length){v.innerHTML='<div class="box empty">আগে বিক্রি (POS) থেকে পণ্য যোগ করুন</div>';return}
+  if(!sel||!prod(sel))sel=P[0].id;
+  v.innerHTML='<div class="box pad"><select id="ps">'+P.map(function(p){return '<option value="'+p.id+'"'+(p.id==sel?' selected':'')+'>'+p.name+'</option>'}).join('')+'</select><input id="pq" type="number" inputmode="decimal" step="any" min="0" placeholder="কতটুকু তৈরি হলো" value="'+qty+'"><div class="hint" id="pu"></div><div id="nd"></div><button class="pay" id="go">উৎপাদন সম্পন্ন করুন ✓</button></div>';
+  $('ps').onchange=function(){sel=+this.value;calc()};$('pq').oninput=function(){qty=this.value;calc()};$('go').onclick=done;calc()}
+ else if(T==='rec'){v.innerHTML='<div class="box">'+(P.map(function(p){var s=(p.recipe||[]).map(function(l){var m=mat(l.mid);return m?m.name+' '+fq(m.unit,l.qty):''}).filter(Boolean).join(', ');
+   return '<button class="r" data-id="'+p.id+'"><div class="n">'+p.name+'<small>'+(s?'১ '+UN[p.unit||'pc']+'-এ: '+s:'রেসিপি দেওয়া নেই')+'</small></div><b>✏️</b></button>'}).join('')||'<div class="empty">কোনো পণ্য নেই</div>')+'</div>';
+   [].forEach.call(v.querySelectorAll('.r'),function(b){b.onclick=function(){openRec(prod(b.dataset.id))}})}
+ else{var h=L.filter(function(l){return l.type==='prod'}).sort(function(a,b){return b.at-a.at}).slice(0,100);
+  v.innerHTML='<div class="box">'+(h.map(function(l){var d=new Date(l.at);return '<div class="r"><div class="n">'+l.name+'<small>'+d.toLocaleDateString(LOC(),{day:'numeric',month:'long'})+' '+d.toLocaleTimeString(LOC(),{hour:'numeric',minute:'2-digit'})+'</small></div><b class="good">+'+fq(l.unit,l.qty)+'</b></div>'}).join('')||'<div class="empty">এখনো কোনো উৎপাদন লেখা হয়নি</div>')+'</div>'}}
+function calc(){var p=prod(sel),q=+qty||0;$('pu').textContent='পরিমাণ ('+UN[p.unit||'pc']+')'+(typeof p.stock==='number'?' • এখন স্টক: '+fq(p.unit,p.stock):'');
+ var n=need(p,q),h='';
+ if(!(p.recipe&&p.recipe.length))h='<div class="hint">এই পণ্যের রেসিপি নেই — শুধু স্টক বাড়বে। রেসিপি দিতে "📖 রেসিপি" ট্যাবে যান।</div>';
+ else if(q>0)h='<div class="hint">লাগবে:</div>'+n.map(function(x){var lack=typeof x.m.stock==='number'&&x.m.stock<x.n;return '<div class="row" style="justify-content:space-between;margin-top:4px"><span>'+x.m.name+'</span><span class="'+(lack?'bad':'')+'">'+fq(x.m.unit,x.n)+' <small>(আছে '+(typeof x.m.stock==='number'?fq(x.m.unit,x.m.stock):'—')+')</small>'+(lack?' ❌':'')+'</span></div>'}).join('');
+ $('nd').innerHTML=h}
+async function done(){var p=prod(sel),q=+qty;if(!(q>0))return toast('পরিমাণ লিখুন');var n=need(p,q);
+ var lack=n.filter(function(x){return typeof x.m.stock==='number'&&x.m.stock<x.n});
+ if(lack.length&&!confirm('উপকরণ কম আছে ('+lack.map(function(x){return x.m.name}).join(', ')+'), তবুও করবেন?'))return;
+ var now=Date.now();p.stock=r3((typeof p.stock==='number'?p.stock:0)+q);await put('products',p);
+ await put('stocklog',{at:now,type:'prod',store:'products',pid:p.id,name:p.name,qty:q,unit:p.unit,after:p.stock,note:'উৎপাদন'});
+ for(var i=0;i<n.length;i++){var m=n[i].m;if(typeof m.stock!=='number')continue;m.stock=r3(m.stock-n[i].n);await put('materials',m);
+  await put('stocklog',{at:now,type:'use',store:'materials',pid:m.id,name:m.name,qty:-n[i].n,unit:m.unit,after:m.stock,note:p.name+' উৎপাদনে'})}
+ qty='';toast('উৎপাদন সংরক্ষিত ✓ '+p.name+' +'+fq(p.unit,q));await load()}
+function openRec(p){cur=p;$('rn').textContent=p.name+' — রেসিপি';$('rh').textContent='১ '+UN[p.unit||'pc']+' তৈরিতে কোন উপকরণ কতটুকু লাগে (ব্যবহার না হলে ফাঁকা রাখুন)';
+ $('rl').innerHTML=M.length?M.map(function(m){var l=(p.recipe||[]).find(function(x){return x.mid==m.id});return '<div class="m"><span>'+m.name+'</span><input type="number" inputmode="decimal" step="any" min="0" data-m="'+m.id+'" value="'+(l?l.qty:'')+'"><small>'+UN[m.unit]+'</small></div>'}).join(''):'<div class="hint">আগে "স্টক ব্যবস্থাপনা → 🧂 উপকরণ" থেকে উপকরণ যোগ করুন।</div>';
+ $('rd').showModal()}
+$('rok').onclick=async function(){var r=[];[].forEach.call($('rl').querySelectorAll('input'),function(i){if(i.value!==''&&+i.value>0)r.push({mid:+i.dataset.m,qty:+i.value})});
+ cur.recipe=r;await put('products',cur);$('rd').close();load()};
+$('rclr').onclick=async function(){cur.recipe=[];await put('products',cur);$('rd').close();load()};$('rno').onclick=function(){$('rd').close()};
+$('tabs').onclick=function(e){if(e.target.dataset.t){T=e.target.dataset.t;render()}};
+(async function(){db=await open();await load();if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})})();
+</script></body></html>

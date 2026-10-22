@@ -1,0 +1,17 @@
+/* Inner pages: light cream page with dark text (as before), dark & gold top bar and gold buttons */
+:root{--navy:#14100a;--gold:#d9a94e;--bg:#fffaf1;--card:#ffffff;--text:#2a2233;--sub:#6b6275}
+@media (prefers-color-scheme:dark){:root{--navy:#14100a;--gold:#d9a94e;--bg:#fffaf1;--card:#ffffff;--text:#2a2233;--sub:#6b6275}}
+.top{background:#050403;border-bottom:2px solid #c99a3f}
+.top h1{color:#f4d98a}
+.sec,.box,.c,.item,.stats div,.hl>div,.btn,.fact,.rv,.product{border-color:#c99a3f55!important}
+button.pay,.pay,.b,.share,.more{background:linear-gradient(#ecc96f,#b8862a)!important;color:#1a1205!important;border:0;font-weight:800}
+.pay:disabled{opacity:.45}
+.b.r{background:linear-gradient(#e0614f,#a52a1c)!important;color:#fff!important}
+.link{color:#9a6a12}
+.c.big{background:linear-gradient(#1f1709,#0b0906);border:1px solid #c99a3f99!important}
+.c.big b{color:#f4d98a}.c.big span{color:#cdb98a}
+.tabs .on{background:linear-gradient(#ecc96f,#b8862a)!important;color:#1a1205!important}
+.tabs button,.tabs label{border-color:#c99a3f}
+.cart{border-top:2px solid #c99a3f}
+.av{background:linear-gradient(#f0cc6e,#b8862a);color:#1a1205}
+.bar{background:linear-gradient(90deg,#e9c566,#b8862a)}

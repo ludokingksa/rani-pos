@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#061119"><link rel="manifest" href="manifest.webmanifest">
+<title>প্রোফাইল</title>
+<style>
+:root{--navy:#061119;--gold:#d9a94e;--bg:#fffaf1;--card:#fff;--text:#2a2233;--sub:#6b6275}
+@media (prefers-color-scheme:dark){:root{--bg:#171420;--card:#221e2e;--text:#f4eee6;--sub:#a79fb3}}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,sans-serif;background:var(--bg);color:var(--text);padding-bottom:30px}
+.top{background:var(--navy);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5}
+.top a{color:#fff;text-decoration:none;font-size:22px}.top h1{font-size:18px;flex:1}
+.wrap{max-width:700px;margin:auto;padding:10px}
+.hero{background:var(--navy);color:#fff;border-radius:20px;padding:20px;text-align:center;margin-bottom:10px}
+.av{width:78px;height:78px;border-radius:50%;background:var(--gold);color:#222;display:grid;place-items:center;font-size:36px;font-weight:800;margin:0 auto 8px}
+.nm{font-size:22px;font-weight:700}.rl{display:inline-block;background:#ffffff22;border-radius:12px;padding:3px 12px;font-size:13px;margin-top:6px}.sp{font-size:13px;color:#cfc5b4;margin-top:6px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.c{background:var(--card);border-radius:16px;padding:12px;border:1px solid #0001}.c span{font-size:13px;color:var(--sub)}.c b{display:block;font-size:22px;margin-top:2px}.c small{color:var(--sub);font-size:12px}
+.sec{background:var(--card);border-radius:16px;border:1px solid #0001;padding:14px;margin-bottom:10px}
+.sec h2{font-size:16px;margin-bottom:8px}.sec>*{margin-top:8px}.sec>h2{margin-top:0}
+.hint{font-size:13px;color:var(--sub);line-height:1.6}
+input{font:inherit;background:var(--bg);color:var(--text);border:1px solid #0003;border-radius:10px;padding:10px;width:100%}
+.b{border:0;border-radius:14px;background:var(--navy);color:#fff;padding:12px;font:inherit;font-weight:700;width:100%}.b.g{background:var(--gold);color:#222}.b.r{background:#c0262d}
+.ok{color:#2e9d5b;font-weight:700}.bad{color:#c0262d;font-weight:700}
+#toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#2e9d5b;color:#fff;padding:9px 18px;border-radius:20px;display:none;z-index:99}
+</style><link rel="stylesheet" href="theme.css"></head><body><script>window.LOC=function(){try{var l=localStorage.getItem('lang');return l==='en'?'en-US':l==='ar'?'ar-u-nu-latn':(localStorage.getItem('rani_en')==='1'?'en-US':'bn-BD')}catch(e){return 'bn-BD'}};
+(function(){try{if(localStorage.getItem('rani_secure')!=='1')return;var r=localStorage.getItem('rani_role'),bad='owner,manager,cashier'.split(',').indexOf(r)<0,c={};
+try{c=JSON.parse(localStorage.getItem('rani_cfg')||'{}')}catch(e){}
+var m=+c.idle||0,out=function(){['rani_role','rani_user','rani_uid'].forEach(function(k){localStorage.removeItem(k)});if(parent!==window)parent.postMessage('close','*');else location.replace('index.html')};
+if(!bad&&m>0&&Date.now()-(+localStorage.getItem('rani_act')||Date.now())>m*60000){out();return}
+if(bad){if(parent!==window)parent.postMessage('close','*');else location.replace('index.html');return}
+var t=0;['click','touchstart','keydown'].forEach(function(e){addEventListener(e,function(){var n=Date.now();if(n-t>15000){t=n;localStorage.setItem('rani_act',n)}},true)});localStorage.setItem('rani_act',Date.now());
+if(m>0)setInterval(function(){if(Date.now()-(+localStorage.getItem('rani_act')||0)>m*60000)out()},30000)}catch(e){}})()</script><script src="i18n.js"></script><div class="top"><a href="index.html" aria-label="Back">←</a><h1>প্রোফাইল</h1></div>
+<div class="wrap">
+ <div class="hero"><div class="av" id="av">?</div><div class="nm" id="nm"></div><div class="rl" id="rl"></div><div class="sp" id="sp"></div></div>
+ <div class="cards"><div class="c"><span>আজ (আপনার নামে)</span><b id="t1">৳০</b><small id="c1"></small></div><div class="c"><span>এই মাস</span><b id="t2">৳০</b><small id="c2"></small></div></div>
+ <div class="sec" id="pinsec"><h2>🔑 আমার পিন বদলান</h2>
+  <input id="op" type="password" inputmode="numeric" maxlength="6" placeholder="এখনকার পিন"><input id="np" type="password" inputmode="numeric" maxlength="6" placeholder="নতুন পিন (৪–৬ সংখ্যা)"><input id="np2" type="password" inputmode="numeric" maxlength="6" placeholder="নতুন পিন আবার"><button class="b g" id="pb">পিন বদলান</button></div>
+ <div class="sec"><h2>🏪 দোকান</h2><div id="shop" class="hint"></div><button class="b" id="shopb" style="display:none">সেটিংসে গিয়ে বদলান</button></div>
+ <div class="sec" id="bksec"><h2>💾 ব্যাকআপ</h2><div id="bk" class="hint"></div><button class="b" id="bkb">ব্যাকআপ নিতে সেটিংসে যান</button></div>
+ <div class="sec"><h2>ℹ️ অ্যাপের তথ্য</h2><div class="hint" id="info"></div></div>
+ <button class="b r" id="lo">🚪 লগ আউট</button>
+</div><div id="toast"></div>
+
+<script>
+var $=function(i){return document.getElementById(i)},nb=function(n){return (+n).toLocaleString(LOC(),{maximumFractionDigits:2})},tk=function(n){return '৳'+nb(Math.round(n*100)/100)},RL={owner:'মালিক',manager:'ম্যানেজার',cashier:'ক্যাশিয়ার'};
+var db,U=[],secure=localStorage.getItem('rani_secure')==='1',uname=localStorage.getItem('rani_user')||"",role=localStorage.getItem('rani_role')||"",uid=localStorage.getItem('rani_uid');
+function toast(m){var t=$('toast');t.textContent=m;t.style.display='block';setTimeout(function(){t.style.display='none'},2200)}
+function nav(u){if(parent!==window)parent.postMessage('close','*');else location.href=u}
+function open(){return new Promise(function(res,rej){var r=indexedDB.open('rani',4);
+ r.onupgradeneeded=function(){var d=r.result;['products','sales','materials','stocklog','expenses','users'].forEach(function(n){if(!d.objectStoreNames.contains(n))d.createObjectStore(n,{keyPath:'id',autoIncrement:true})})};
+ r.onsuccess=function(){res(r.result)};r.onerror=rej})}
+var all=function(s){return new Promise(function(r){var q=db.transaction(s).objectStore(s).getAll();q.onsuccess=function(){r(q.result)}})};
+async function H(s){try{var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('rani|'+s));return Array.prototype.map.call(new Uint8Array(b),function(x){return ('0'+x.toString(16)).slice(-2)}).join("")}catch(e){var h=5381;for(var i=0;i<s.length;i++)h=((h*33)^s.charCodeAt(i))>>>0;return 'f'+h}}
+function shop(){try{return JSON.parse(localStorage.getItem('rani_shop')||'{}')}catch(e){return {}}}
+function paint(){
+ $('av').textContent=(secure&&uname?uname:'র').charAt(0);$('nm').textContent=secure&&uname?uname:'মালিক';
+ $('rl').textContent=secure?(RL[role]||""):'পিন চালু নেই';
+ var s=shop();$('sp').textContent=s.name||'রাণী সুইটস এন্ড বেকারি';
+ $('shop').innerHTML=(s.name?'<b>'+s.name+'</b><br>':'<span class="hint">দোকানের নাম দেওয়া নেই</span><br>')+(s.phone?'📞 '+s.phone+'<br>':"")+(s.addr?'📍 '+s.addr:"");
+ var canSet=!secure||role==='owner';$('shopb').style.display=canSet?'block':'none';$('bksec').style.display=canSet?'block':'none';
+ $('pinsec').style.display=secure&&uid?'block':'none';$('lo').style.display=secure?'block':'none';
+ var t=+localStorage.getItem('rani_lastbackup')||0,d=Math.floor((Date.now()-t)/864e5);
+ $('bk').innerHTML=t?'শেষ ব্যাকআপ: <span class="'+(d>7?'bad':'ok')+'">'+new Date(t).toLocaleDateString(LOC(),{day:'numeric',month:'long',year:'numeric'})+'</span>':'<span class="bad">এখনো কোনো ব্যাকআপ নেওয়া হয়নি</span>';
+ var st=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone;
+ $('info').innerHTML='সংস্করণ: ১<br>ইনস্টল করা অ্যাপ: '+(st?'<span class="ok">হ্যাঁ</span>':'না (ব্রাউজারে খোলা)')+'<br>ইন্টারনেট: '+(navigator.onLine?'<span class="ok">আছে</span>':'<span class="bad">নেই — অফলাইনে চলছে</span>')}
+async function stats(){var S=await all('sales'),now=new Date(),a=new Date(now.getFullYear(),now.getMonth(),now.getDate()).getTime(),m=new Date(now.getFullYear(),now.getMonth(),1).getTime(),t1=0,c1=0,t2=0,c2=0;
+ S.forEach(function(s){if(secure&&uname&&s.by!==uname)return;if(s.at>=m){t2+=s.total;c2++}if(s.at>=a){t1+=s.total;c1++}});
+ $('t1').textContent=tk(t1);$('c1').textContent=nb(c1)+' টি বিক্রি';$('t2').textContent=tk(t2);$('c2').textContent=nb(c2)+' টি বিক্রি'}
+$('pb').onclick=async function(){var me=U.find(function(x){return x.id==uid});if(!me)return toast('ব্যবহারকারী পাওয়া যায়নি');
+ if(await H(me.salt+$('op').value)!==me.h)return toast('এখনকার পিন ভুল');
+ var n=$('np').value;if(!/^\d{4,6}$/.test(n))return toast('নতুন পিন ৪ থেকে ৬ ইংরেজি সংখ্যার হতে হবে');if(n!==$('np2').value)return toast('দুই পিন মিলছে না');
+ me.h=await H(me.salt+n);await new Promise(function(r){var t=db.transaction('users','readwrite');t.objectStore('users').put(me);t.oncomplete=r});
+ $('op').value=$('np').value=$('np2').value="";toast('পিন বদলানো হয়েছে ✓')};
+$('shopb').onclick=function(){nav('settings.html')};$('bkb').onclick=function(){nav('settings.html')};
+$('lo').onclick=function(){['rani_role','rani_user','rani_uid'].forEach(function(k){localStorage.removeItem(k)});nav('index.html')};
+(async function(){paint();try{db=await open();U=await all('users');await stats()}catch(e){}
+ if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})})();
+</script></body></html>

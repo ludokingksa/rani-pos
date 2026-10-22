@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#061119"><link rel="manifest" href="manifest.webmanifest">
+<title>ব্যবহারকারী</title>
+<style>
+:root{--navy:#061119;--gold:#d9a94e;--bg:#fffaf1;--card:#fff;--text:#2a2233;--sub:#6b6275}
+@media (prefers-color-scheme:dark){:root{--bg:#171420;--card:#221e2e;--text:#f4eee6;--sub:#a79fb3}}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,sans-serif;background:var(--bg);color:var(--text);padding-bottom:30px}
+.top{background:var(--navy);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:5}
+.top a{color:#fff;text-decoration:none;font-size:22px}.top h1{font-size:18px;flex:1}
+.top button{background:var(--gold);border:0;border-radius:14px;padding:8px 14px;font:inherit;font-weight:700}
+.wrap{max-width:700px;margin:auto;padding:10px}
+.box{background:var(--card);border-radius:16px;border:1px solid #0001;overflow:hidden}
+.r{display:flex;gap:12px;align-items:center;padding:12px;border-bottom:1px solid #0001;font-size:15px;width:100%;background:none;border-left:0;border-right:0;border-top:0;color:var(--text);font-family:inherit;text-align:left}
+.r:last-child{border:0}.r .n{flex:1}.r small{display:block;color:var(--sub);font-size:12px}
+.av{width:42px;height:42px;border-radius:50%;background:var(--gold);display:grid;place-items:center;font-size:20px;font-weight:700;color:#222}
+.tag{font-size:11px;background:#2e9d5b22;color:#2e9d5b;border-radius:10px;padding:2px 8px;margin-left:6px}
+.note{background:#d9a94e22;border:1px solid var(--gold);border-radius:14px;padding:12px;font-size:13px;margin-bottom:10px;line-height:1.5}
+.roles{font-size:12px;color:var(--sub);margin:12px 4px;line-height:1.6}
+.empty{padding:26px;text-align:center;color:var(--sub)}
+dialog{border:0;border-radius:18px;padding:16px;background:var(--card);color:var(--text);width:min(92vw,380px)}
+dialog>*{margin-top:8px}dialog::backdrop{background:#0006}
+input,select{font:inherit;background:var(--bg);color:var(--text);border:1px solid #0003;border-radius:10px;padding:10px;width:100%}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.pay{border:0;border-radius:14px;background:var(--navy);color:#fff;padding:12px 22px;font:inherit;font-weight:700}.link{background:none;border:0;color:#b9852a;font:inherit;text-decoration:underline}
+.code{font-size:30px;font-weight:800;letter-spacing:4px;text-align:center;background:var(--bg);border:2px dashed var(--gold);border-radius:14px;padding:16px;font-family:monospace}
+#toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#2e9d5b;color:#fff;padding:9px 18px;border-radius:20px;display:none;z-index:99}
+</style><link rel="stylesheet" href="theme.css"></head><body><script>window.LOC=function(){try{var l=localStorage.getItem('lang');return l==='en'?'en-US':l==='ar'?'ar-u-nu-latn':(localStorage.getItem('rani_en')==='1'?'en-US':'bn-BD')}catch(e){return 'bn-BD'}};
+(function(){try{if(localStorage.getItem('rani_secure')!=='1')return;var r=localStorage.getItem('rani_role'),bad='owner'.split(',').indexOf(r)<0,c={};
+try{c=JSON.parse(localStorage.getItem('rani_cfg')||'{}')}catch(e){}
+var m=+c.idle||0,out=function(){['rani_role','rani_user','rani_uid'].forEach(function(k){localStorage.removeItem(k)});if(parent!==window)parent.postMessage('close','*');else location.replace('index.html')};
+if(!bad&&m>0&&Date.now()-(+localStorage.getItem('rani_act')||Date.now())>m*60000){out();return}
+if(bad){if(parent!==window)parent.postMessage('close','*');else location.replace('index.html');return}
+var t=0;['click','touchstart','keydown'].forEach(function(e){addEventListener(e,function(){var n=Date.now();if(n-t>15000){t=n;localStorage.setItem('rani_act',n)}},true)});localStorage.setItem('rani_act',Date.now());
+if(m>0)setInterval(function(){if(Date.now()-(+localStorage.getItem('rani_act')||0)>m*60000)out()},30000)}catch(e){}})()</script><script src="i18n.js"></script>
+<div class="top"><a href="index.html" aria-label="Back">←</a><h1>ব্যবহারকারী</h1><button id="new">➕ নতুন</button></div>
+<div class="wrap">
+ <div class="note">🔒 এটি দোকানের একই ফোনে মালিক, ম্যানেজার ও ক্যাশিয়ারের কাজ আলাদা রাখার জন্য (পিন দিয়ে ঢোকা)। এটি ব্যাংকের মতো কড়া নিরাপত্তা নয়। ফোনটা অন্যের হাতে গেলে আসল সুরক্ষা ফোনের নিজের লক।</div>
+ <div class="box" id="list"></div>
+ <div class="roles"><b>মালিক:</b> সব কাজ ও ব্যবহারকারী পরিচালনা।<br><b>ম্যানেজার:</b> বিক্রি, স্টক, উৎপাদন, খরচ ও হিসাব। ব্যবহারকারী পরিচালনা নয়।<br><b>ক্যাশিয়ার:</b> শুধু বিক্রি (POS)।</div>
+</div><div id="toast"></div>
+<dialog id="ud"><b id="ut"></b>
+ <input id="un" placeholder="নাম"><select id="ur"><option value="owner">মালিক</option><option value="manager">ম্যানেজার</option><option value="cashier">ক্যাশিয়ার</option></select>
+ <input id="up" type="password" inputmode="numeric" maxlength="6" placeholder="পিন (৪–৬ সংখ্যা)"><input id="up2" type="password" inputmode="numeric" maxlength="6" placeholder="পিন আবার লিখুন">
+ <div class="row"><button class="pay" id="uok">সংরক্ষণ</button><button class="link" id="uno">বাতিল</button></div>
+ <div class="row"><button class="link" id="urec" style="display:none">🔑 নতুন রিকভারি কোড</button><button class="link" id="udel" style="margin-left:auto;color:#c0262d;display:none">মুছুন</button></div></dialog>
+<dialog id="cd"><b>🔑 রিকভারি কোড</b><div class="code" id="cv"></div>
+ <div style="font-size:13px;line-height:1.5">এই কোডটা <b>কাগজে লিখে</b> নিরাপদ জায়গায় রাখুন। মালিক পিন ভুলে গেলে এটি দিয়েই নতুন পিন দেওয়া যাবে। এটি আর দেখানো হবে না। হারালে এবং পিন ভুলে গেলে ফোনের ডেটা মুছে ফেলা ছাড়া উপায় থাকবে না।</div>
+ <button class="pay" id="cok" style="width:100%">লিখে রেখেছি ✓</button></dialog>
+<script>
+var $=function(i){return document.getElementById(i)},RL={owner:'মালিক',manager:'ম্যানেজার',cashier:'ক্যাশিয়ার'};
+var db,U=[],cur=null;
+function open(){return new Promise(function(res,rej){var r=indexedDB.open('rani',4);
+ r.onupgradeneeded=function(){var d=r.result;['products','sales','materials','stocklog','expenses','users'].forEach(function(n){if(!d.objectStoreNames.contains(n))d.createObjectStore(n,{keyPath:'id',autoIncrement:true})})};
+ r.onsuccess=function(){res(r.result)};r.onerror=rej})}
+function tx(s,m,f){return new Promise(function(res,rej){var t=db.transaction(s,m),st=t.objectStore(s),q=f(st);t.oncomplete=function(){res(q&&q.result)};t.onerror=rej})}
+var all=function(){return tx('users','readonly',function(s){return s.getAll()})},put=function(v){return tx('users','readwrite',function(s){return s.put(v)})};
+function toast(m){var t=$('toast');t.textContent=m;t.style.display='block';setTimeout(function(){t.style.display='none'},2000)}
+async function H(s){try{var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('rani|'+s));return Array.prototype.map.call(new Uint8Array(b),function(x){return ('0'+x.toString(16)).slice(-2)}).join('')}catch(e){var h=5381;for(var i=0;i<s.length;i++)h=((h*33)^s.charCodeAt(i))>>>0;return 'f'+h}}
+function rnd(n,al){var a=new Uint8Array(n),s='';(window.crypto||{getRandomValues:function(x){for(var i=0;i<x.length;i++)x[i]=Math.random()*256}}).getRandomValues(a);for(var i=0;i<n;i++)s+=al[a[i]%al.length];return s}
+function genCode(){return rnd(8,'ABCDEFGHJKLMNPQRSTUVWXYZ23456789')}
+var owners=function(){return U.filter(function(u){return u.role==='owner'})};
+async function load(){U=await all();render()}
+function render(){var me=localStorage.getItem('rani_uid');
+ $('list').innerHTML=U.map(function(u){return '<button class="r" data-id="'+u.id+'"><span class="av">'+u.name.charAt(0)+'</span><div class="n">'+u.name+(u.id==me?'<span class="tag">আপনি</span>':'')+'<small>'+RL[u.role]+'</small></div><b>✏️</b></button>'}).join('')||'<div class="empty">কোনো ব্যবহারকারী নেই।<br>প্রথমে <b>➕ নতুন</b> চেপে মালিকের অ্যাকাউন্ট বানান।<br>এরপর অ্যাপে ঢুকতে পিন লাগবে।</div>'}
+function showCode(c,after){$('cv').textContent=c.slice(0,4)+'-'+c.slice(4);$('cd').showModal();$('cok').onclick=function(){$('cd').close();if(after)after()}}
+$('new').onclick=function(){cur=null;$('ut').textContent=U.length?'নতুন ব্যবহারকারী':'মালিকের অ্যাকাউন্ট বানান';$('un').value=$('up').value=$('up2').value='';
+ $('ur').value=U.length?'cashier':'owner';$('ur').disabled=!U.length;$('up').placeholder='পিন (৪–৬ সংখ্যা)';$('urec').style.display=$('udel').style.display='none';$('ud').showModal()};
+$('list').onclick=function(e){var b=e.target.closest('.r');if(!b)return;cur=U.find(function(x){return x.id==b.dataset.id});
+ $('ut').textContent='সম্পাদনা';$('un').value=cur.name;$('ur').value=cur.role;$('ur').disabled=cur.role==='owner'&&owners().length<2;
+ $('up').value=$('up2').value='';$('up').placeholder='নতুন পিন (না বদলাতে চাইলে ফাঁকা)';
+ var me=localStorage.getItem('rani_uid');$('udel').style.display=(cur.id==me||(cur.role==='owner'&&owners().length<2))?'none':'block';$('urec').style.display=cur.role==='owner'?'block':'none';$('ud').showModal()};
+$('uno').onclick=function(){$('ud').close()};
+$('uok').onclick=async function(){var n=$('un').value.trim(),p=$('up').value,p2=$('up2').value;if(!n)return toast('নাম দিন');
+ if(!cur||p||p2){if(!/^\d{4,6}$/.test(p))return toast('পিন ৪ থেকে ৬ সংখ্যার হতে হবে');if(p!==p2)return toast('দুই পিন মিলছে না')}
+ var role=$('ur').value;
+ if(U.some(function(u){return u.name===n&&(!cur||u.id!==cur.id)}))return toast('এই নামে আরেকজন আছেন');
+ if(cur){cur.name=n;if(!$('ur').disabled)cur.role=role;if(p)cur.h=await H(cur.salt+p);await put(cur);
+  if(cur.id==localStorage.getItem('rani_uid')){localStorage.setItem('rani_user',cur.name);localStorage.setItem('rani_role',cur.role)}
+  $('ud').close();toast('সংরক্ষিত ✓');load();return}
+ var salt=rnd(16,'0123456789abcdef'),u={name:n,role:role,salt:salt,h:await H(salt+p),at:Date.now()},first=!U.length,code=null;
+ if(first||role==='owner'){code=genCode();u.rh=await H(salt+code)}
+ var id=await put(u);u.id=id;$('ud').close();
+ if(first){localStorage.setItem('rani_secure','1');localStorage.setItem('rani_role','owner');localStorage.setItem('rani_user',n);localStorage.setItem('rani_uid',id)}
+ if(code)showCode(code,load);else{toast('ব্যবহারকারী যোগ হয়েছে ✓');load()}};
+$('urec').onclick=async function(){var c=genCode();cur.rh=await H(cur.salt+c);await put(cur);$('ud').close();showCode(c)};
+$('udel').onclick=async function(){if(!confirm(cur.name+' কে মুছে ফেলবেন?'))return;await tx('users','readwrite',function(s){return s.delete(cur.id)});$('ud').close();load()};
+(async function(){db=await open();await load();if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})})();
+</script></body></html>
